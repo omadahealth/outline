@@ -5480,11 +5480,6 @@ lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
 
-lodash.snakecase@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/lodash.snakecase/-/lodash.snakecase-4.1.1.tgz#39d714a35357147837aefd64b5dcbb16becd8f8d"
-  integrity sha1-OdcUo1NXFHg3rv1ktdy7Fr7Nj40=
-
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
@@ -6022,7 +6017,7 @@ node-pre-gyp@^0.10.0:
     semver "^5.3.0"
     tar "^4"
 
-node-vault@^0.9.0:
+node-vault@^0.9.11:
   version "0.9.11"
   resolved "https://registry.yarnpkg.com/node-vault/-/node-vault-0.9.11.tgz#4f61fd2b73174a563e654020487aa36fe676ed93"
   integrity sha512-v4xfXtuJuVzQrf8yYh+8/z7yf+UA4O4W0YaOF4rl4TBjK03ryKZnSNnTpfxYTL22pzc9bg7SsLwXi3pWKnACwg==
@@ -8993,15 +8988,6 @@ value-equal@^0.4.0:
 vary@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
-
-vault-dotenv@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/vault-dotenv/-/vault-dotenv-1.0.2.tgz#ea205663bad0d67ad448657fbe28ba973048721a"
-  integrity sha512-hrPFVXesWWrlsMNCo9WYK7Jp/73kE3OCu7K7QDZXfXKPsrj5x9GHSr9QFHvw/ZD5hGAGXFm5gRBmXsv0Nafqog==
-  dependencies:
-    lodash.snakecase "^4.1.1"
-    minimist "^1.2.0"
-    node-vault "^0.9.0"
 
 verror@1.10.0:
   version "1.10.0"
