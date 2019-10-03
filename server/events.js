@@ -93,8 +93,24 @@ export type Event =
   | CollectionEvent
   | IntegrationEvent;
 
-const globalEventsQueue = createQueue('global events');
-const serviceEventsQueue = createQueue('service events');
+const globalEventsQueue = new Queue('global events', {
+  redis: {
+    host: process.env.REDIS_HOST,
+    password: process.env.REDIS_PASSWORD,
+    port: process.env.REDIS_PORT,
+    db: process.env.REDIS_DB,
+    tls: { checkServerIdentity: () => undefined },
+  },
+});
+const serviceEventsQueue = new Queue('service events', {
+  redis: {
+    host: process.env.REDIS_HOST,
+    password: process.env.REDIS_PASSWORD,
+    port: process.env.REDIS_PORT,
+    db: process.env.REDIS_DB,
+    tls: { checkServerIdentity: () => undefined },
+  },
+});
 
 // this queue processes global events and hands them off to service hooks
 globalEventsQueue.process(async job => {
