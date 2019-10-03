@@ -20,7 +20,15 @@ if (process.env.WEBSOCKETS_ENABLED === 'true') {
     cookie: false,
   });
 
-  io.adapter(socketRedisAdapter(process.env.REDIS_URL));
+  io.adapter(
+    socketRedisAdapter({
+      host: process.env.REDIS_HOST,
+      password: process.env.REDIS_PASSWORD,
+      port: process.env.REDIS_PORT,
+      db: process.env.REDIS_DB,
+      tls: { checkServerIdentity: () => undefined },
+    })
+  );
 
   SocketAuth(io, {
     authenticate: async (socket, data, callback) => {

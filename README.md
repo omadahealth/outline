@@ -1,3 +1,29 @@
+# Omada's fork of the outline wiki
+
+## Omada Specific Stuff
+
+### Deployment
+
+When we deploy, we currently build an image and then deploy that image to nomad.
+
+During the app startup process, we pull in the secrets from vault and load those into the environment.
+
+### Keeping fork up to date
+
+Since we have our own fork of outline, we keep it up to date by pulling in the latest changes from the outline project on github
+
+```bash
+git remote add upstream git@github.com:outline/outline.git
+
+git fetch upstream
+
+git checkout master
+
+git rebase upstream/master
+```
+
+---
+
 <p align="center">
   <img src="https://user-images.githubusercontent.com/31465/34380645-bd67f474-eb0b-11e7-8d03-0151c1730654.png" height="29" />
 </p>
