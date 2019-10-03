@@ -23,8 +23,11 @@ if (process.env.WEBSOCKETS_ENABLED === 'true') {
 
   io.adapter(
     socketRedisAdapter({
-      pubClient: client,
-      subClient: subscriber,
+      host: process.env.REDIS_HOST,
+      password: process.env.REDIS_PASSWORD,
+      port: process.env.REDIS_PORT,
+      db: process.env.REDIS_DB,
+      tls: { checkServerIdentity: () => undefined },
     })
   );
 

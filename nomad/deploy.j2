@@ -1,0 +1,83 @@
+job "outline/[[ deploy_env ]]" {
+  region = "[[ region_env ]]"
+  datacenters = ["[[ data_center ]]"]
+  type = "service"
+
+  vault {
+    policies = ["outline_[[ deploy_env ]]"]
+  }
+
+  reschedule {
+   attempts       = 0
+   unlimited      = false
+  }
+
+  update {
+    max_parallel     = 1
+    min_healthy_time = "10s"
+    healthy_deadline = "3m"
+    auto_revert      = false
+  }
+
+  meta {
+    alert_slack_channel = "outline-alerts"
+  }
+
+  migrate {
+    max_parallel     = 1
+    health_check     = "checks"
+    min_healthy_time = "10s"
+    healthy_deadline = "5m"
+  }
+
+  group "web" {
+    count = 1
+    restart {
+      attempts = 0
+      interval = "1m"
+      delay    = "15s"
+      mode     = "fail"
+    }
+    task "node" {
+      driver = "docker"
+      kill_timeout = "5m"
+      config {
+        image = "[[ "DOCKER_IMAGE" | env ]]"
+        port_map {
+          app = 3000
+        }
+        logging {
+          type = "sumologic",
+          config {
+            sumo-source-category = "Application/Outline/[[ deploy_env ]]/Node"
+          }
+        }
+      }
+      resources {
+        cpu    = 300
+        memory = [[ memory ]]
+        network {
+          mbits = 10
+          port "app" {}
+        }
+      }
+      service {
+        name = "[[ 'SERVICE_NAME' | env | default(service_name) ]]"
+        port = "app"
+        check {
+          name     = "alive"
+          type     = "http"
+          path     = "/_health"
+          interval = "10s"
+          timeout  = "10s"
+        }
+      }
+      env {
+        DEPLOY_ENV = "[[ deploy_env ]]"
+        BUILD_URL = "[[ "BUILD_URL" | env ]]"
+        TZ = "America/Los_Angeles"
+        [[ 'secrets.j2' | template ]]
+      }
+    }
+  }
+}
