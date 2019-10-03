@@ -18,7 +18,7 @@ esac
 
 set -ex
 # Build the image
-./jenkins/build-image.sh
+./jenkins/build-image.sh "$DEPLOY_ENV"
 
 # Deploy that image to nomad
 export DOCKER_IMAGE=`./jenkins/image_name.sh`
