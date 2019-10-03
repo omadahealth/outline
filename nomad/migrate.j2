@@ -1,0 +1,46 @@
+job "outline/[[ deploy_env ]]/migration" {
+  region = "[[ region_env ]]"
+  datacenters = ["[[ data_center ]]"]
+
+  vault {
+    policies = ["outline_[[ deploy_env ]]"]
+  }
+
+  meta {
+    alert_slack_channel = "outline-alerts"
+  }
+
+  type = "batch"
+  group "migrate" {
+    count = 1
+    task "yarn" {
+      driver = "docker"
+      config {
+        image = "[[ "DOCKER_IMAGE" | env ]]"
+        command = "yarn"
+        args = [
+          "sequelize:migrate",
+        ]
+        logging {
+          type = "sumologic",
+          config {
+            sumo-source-category = "Application/Outline/[[ deploy_env ]]/Migrate"
+          }
+        }
+      }
+      resources {
+        cpu    = 100
+        memory = 500
+        network {
+          mbits = 10
+        }
+      }
+      env {
+        DEPLOY_ENV = "[[ deploy_env ]]"
+        NODE_ENV = "[[ deploy_env ]]"
+        BUILD_URL = "[[ "BUILD_URL" | env ]]"
+        [[ 'secrets.j2' | template ]]
+      }
+    }
+  }
+}

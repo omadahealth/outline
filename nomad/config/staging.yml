@@ -1,0 +1,6 @@
+memory: 2000
+vault_cluster: staging
+data_center: staging
+region_env: staging
+deploy_env: staging
+service_name: outline
