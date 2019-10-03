@@ -17,6 +17,10 @@ case "$DEPLOY_ENV" in
 esac
 
 set -ex
+# Build the image
+./jenkins/build-image.sh
+
+# Deploy that image to nomad
 export DOCKER_IMAGE=`./jenkins/image_name.sh`
 levant deploy -force-count -ignore-no-changes <(nomad-render-job nomad/migrate.j2 nomad/config/${DEPLOY_ENV}.yml)
 levant deploy -force-count -ignore-no-changes <(nomad-render-job nomad/deploy.j2 nomad/config/${DEPLOY_ENV}.yml)
