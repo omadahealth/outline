@@ -1,0 +1,77 @@
+job "outline/[[ deploy_env ]]" {
+  region = "[[ region_env ]]"
+  datacenters = ["[[ data_center ]]"]
+  type = "service"
+
+  vault {
+    policies = ["outline_[[ deploy_env ]]"]
+  }
+
+  update {
+    max_parallel     = 1
+    min_healthy_time = "10s"
+    healthy_deadline = "3m"
+    auto_revert      = true
+  }
+  migrate {
+    max_parallel     = 1
+    health_check     = "checks"
+    min_healthy_time = "10s"
+    healthy_deadline = "5m"
+  }
+  group "web" {
+    count = 1
+    restart {
+      attempts = 0
+      interval = "30m"
+      delay    = "15s"
+      mode     = "fail"
+    }
+    task "node" {
+      driver = "docker"
+      kill_timeout = "24h"
+      config {
+        image = "[[ "DOCKER_IMAGE" | env ]]"
+        port_map {
+          app = 3000
+        }
+        logging {
+          type = "sumologic",
+          config {
+            sumo-source-category = "Application/Outline/[[ deploy_env ]]/Node"
+          }
+        }
+      }
+      resources {
+        cpu    = 300
+        memory = [[ memory ]]
+        network {
+          mbits = 10
+          port "app" {}
+        }
+      }
+      service {
+        name = "[[ 'SERVICE_NAME' | env | default(service_name) ]]"
+        port = "app"
+        check {
+          name     = "alive"
+          type     = "http"
+          path     = "/_health"
+          interval = "10s"
+          timeout  = "10s"
+        }
+      }
+      env {
+        DEPLOY_ENV = "[[ deploy_env ]]"
+        NODE_ENV = "[[ deploy_env ]]"
+        BUILD_URL = "[[ "BUILD_URL" | env ]]"
+        TZ = "America/Los_Angeles"
+
+        APOHYPATON_URL = "[[ ("vault://vault." + vault_cluster + ".omadahealth.net") ]]"
+        AWS_ACCESS_KEY_ID = "[[ ("platform/aws/outline/" + deploy_env) | vault_kv('aws_access_key_id') ]]"
+        AWS_SECRET_ACCESS_KEY = "[[ ("platform/aws/outline/" + deploy_env) | vault_kv('aws_secret_access_key') | secret ]]"
+        AWS_REGION = "us-west-2"
+      }
+    }
+  }
+}
