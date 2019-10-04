@@ -1,6 +1,9 @@
 #!/bin/bash
 
-IMAGE_NAME=$(./jenkins/image_name.sh "$1")
+if [[ -z $1 ]]; then
+    echo "Error: You must provide a tag name to the build-image script."
+    exit 1
+fi
 set -ex
-docker build . -t "$IMAGE_NAME"
-docker push "$IMAGE_NAME"
+docker build . -t "$1"
+docker push "$1"

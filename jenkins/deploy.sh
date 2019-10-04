@@ -17,11 +17,17 @@ case "$DEPLOY_ENV" in
 esac
 
 set -ex
-# Build the image
-./jenkins/build-image.sh "$DEPLOY_ENV"
+export DOCKER_IMAGE=$(./jenkins/image_name.sh staging)
+
+# See if image already exists in ECR
+IMAGE_EXISTS=$(aws ecr describe-images --repository-name="omada-registry/engineering/outline" --image-ids=imageTag="$DOCKER_IMAGE" 2> /dev/null)
+
+# If it does not exist, build it
+if [ -z "${IMAGE_EXISTS}" ]; then
+  ./jenkins/build-image.sh "$DOCKER_IMAGE"
+fi
 
 # Deploy that image to nomad
-export DOCKER_IMAGE=`./jenkins/image_name.sh`
 levant deploy -force-count -ignore-no-changes <(nomad-render-job nomad/migrate.j2 nomad/config/${DEPLOY_ENV}.yml)
 levant deploy -force-count -ignore-no-changes <(nomad-render-job nomad/deploy.j2 nomad/config/${DEPLOY_ENV}.yml)
 git tag ${GIT_TAG_PREFIX}_`date +"%Y%m%d%H%M%S"`
