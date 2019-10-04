@@ -13,12 +13,18 @@ job "outline/[[ deploy_env ]]" {
     healthy_deadline = "3m"
     auto_revert      = true
   }
+
+  meta {
+    alert_slack_channel = "outline-alerts"
+  }
+
   migrate {
     max_parallel     = 1
     health_check     = "checks"
     min_healthy_time = "10s"
     healthy_deadline = "5m"
   }
+
   group "web" {
     count = 1
     restart {

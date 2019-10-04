@@ -9,6 +9,7 @@ job "outline/[[ deploy_env ]]/migration" {
   meta {
     alert_slack_channel = "outline-alerts"
   }
+
   type = "batch"
   group "migrate" {
     count = 1
