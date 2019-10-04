@@ -33,8 +33,7 @@ if [ -z "${IMAGE_EXISTS}" ]; then
 fi
 
 # Deploy that image to nomad
-#levant deploy -force-count -ignore-no-changes <(nomad-render-job nomad/migrate.j2 nomad/config/${DEPLOY_ENV}.yml)
-#levant deploy -force-count -ignore-no-changes <(nomad-render-job nomad/deploy.j2 nomad/config/${DEPLOY_ENV}.yml)
-nomad-render-job nomad/deploy.j2 nomad/config/${DEPLOY_ENV}.yml
+levant deploy -force-count -ignore-no-changes <(nomad-render-job nomad/migrate.j2 nomad/config/${DEPLOY_ENV}.yml)
+levant deploy -force-count -ignore-no-changes <(nomad-render-job nomad/deploy.j2 nomad/config/${DEPLOY_ENV}.yml)
 git tag ${GIT_TAG_PREFIX}_`date +"%Y%m%d%H%M%S"`
 git push --tags
