@@ -77,6 +77,9 @@ job "outline/[[ deploy_env ]]" {
         AWS_ACCESS_KEY_ID = "[[ ("platform/aws/outline/" + deploy_env) | vault_kv('aws_access_key_id') ]]"
         AWS_SECRET_ACCESS_KEY = "[[ ("platform/aws/outline/" + deploy_env) | vault_kv('aws_secret_access_key') | secret ]]"
         AWS_REGION = "us-west-2"
+
+        SECRET_KEY="[[ ("apps/outline/" + deploy_env) | vault_kv('secret_key') ]]"
+
       }
     }
   }
