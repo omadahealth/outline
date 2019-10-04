@@ -40,10 +40,7 @@ job "outline/[[ deploy_env ]]/migration" {
         DEPLOY_ENV = "[[ deploy_env ]]"
         NODE_ENV = "[[ deploy_env ]]"
         BUILD_URL = "[[ "BUILD_URL" | env ]]"
-
-        APOHYPATON_URL = "[[ ("vault://vault." + vault_cluster + ".omadahealth.net") ]]"
-        AWS_ACCESS_KEY_ID = "[[ ("platform/aws/outline/" + deploy_env) | vault_kv('aws_access_key_id') ]]"
-        AWS_SECRET_ACCESS_KEY = "[[ ("platform/aws/outline/" + deploy_env) | vault_kv('aws_secret_access_key') | secret ]]"
+        [[ 'secrets.j2' | template ]]
       }
     }
   }
