@@ -19,8 +19,10 @@ esac
 set -ex
 export DOCKER_IMAGE=$(./jenkins/image_name.sh staging)
 
-# See if image already exists in ECR
+# See if image already exists in ECR (dont error out when this fails)
+set +e
 IMAGE_EXISTS=$(aws ecr describe-images --repository-name="omada-registry/engineering/outline" --image-ids=imageTag="$DOCKER_IMAGE" 2> /dev/null)
+set -e
 
 # If it does not exist, build it
 if [ -z "${IMAGE_EXISTS}" ]; then
