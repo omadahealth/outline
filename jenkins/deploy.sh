@@ -17,11 +17,14 @@ case "$DEPLOY_ENV" in
 esac
 
 set -ex
-export DOCKER_IMAGE=$(./jenkins/image_name.sh staging)
+
+ECR_REPO="661956145551.dkr.ecr.us-west-2.amazonaws.com/omada-registry/engineering/outline"
+IMAGE_NAME=$(./jenkins/image_name.sh staging)
+export DOCKER_IMAGE="$ECR_REPO:$IMAGE_NAME"
 
 # See if image already exists in ECR (dont error out when this fails)
 set +e
-IMAGE_EXISTS=$(aws ecr describe-images --repository-name="omada-registry/engineering/outline" --image-ids=imageTag="$DOCKER_IMAGE" 2> /dev/null)
+IMAGE_EXISTS=$(aws ecr describe-images --repository-name="omada-registry/engineering/outline" --image-ids=imageTag="$IMAGE_NAME" 2> /dev/null)
 set -e
 
 # If it does not exist, build it
