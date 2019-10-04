@@ -69,7 +69,6 @@ job "outline/[[ deploy_env ]]" {
       }
       env {
         DEPLOY_ENV = "[[ deploy_env ]]"
-        NODE_ENV = "[[ deploy_env ]]"
         BUILD_URL = "[[ "BUILD_URL" | env ]]"
         TZ = "America/Los_Angeles"
         [[ 'secrets.j2' | template ]]
