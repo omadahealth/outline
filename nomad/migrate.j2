@@ -19,8 +19,7 @@ job "outline/[[ deploy_env ]]/migration" {
         image = "[[ "DOCKER_IMAGE" | env ]]"
         command = "yarn"
         args = [
-          "sequelize",
-          "db:migrate"
+          "sequelize:migrate",
         ]
         logging {
           type = "sumologic",
