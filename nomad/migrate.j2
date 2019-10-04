@@ -17,11 +17,7 @@ job "outline/[[ deploy_env ]]/migration" {
       driver = "docker"
       config {
         image = "[[ "DOCKER_IMAGE" | env ]]"
-        command = "yarn"
-        args = [
-          "sequelize",
-          "db:migrate"
-        ]
+        command = "env"
         logging {
           type = "sumologic",
           config {
