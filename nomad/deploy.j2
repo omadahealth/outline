@@ -7,6 +7,11 @@ job "outline/[[ deploy_env ]]" {
     policies = ["outline_[[ deploy_env ]]"]
   }
 
+  reschedule {
+   attempts       = 0
+   unlimited      = false
+  }
+
   update {
     max_parallel     = 1
     min_healthy_time = "10s"
