@@ -29,13 +29,13 @@ job "outline/[[ deploy_env ]]" {
     count = 1
     restart {
       attempts = 0
-      interval = "30m"
+      interval = "1m"
       delay    = "15s"
       mode     = "fail"
     }
     task "node" {
       driver = "docker"
-      kill_timeout = "24h"
+      kill_timeout = "5m"
       config {
         image = "[[ "DOCKER_IMAGE" | env ]]"
         port_map {
