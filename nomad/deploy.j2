@@ -16,7 +16,7 @@ job "outline/[[ deploy_env ]]" {
     max_parallel     = 1
     min_healthy_time = "10s"
     healthy_deadline = "3m"
-    auto_revert      = true
+    auto_revert      = false
   }
 
   meta {
