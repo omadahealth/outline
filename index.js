@@ -56,9 +56,14 @@ if (!process.env.DATABASE_URL) {
   process.exit(1);
 }
 
-if (!process.env.REDIS_URL) {
+if (
+  !process.env.REDIS_HOST ||
+  !process.env.REDIS_PASSWORD ||
+  !process.env.REDIS_DB ||
+  !process.env.REDIS_PORT
+) {
   console.error(
-    'The REDIS_URL env variable must be set to the location of your redis server, including authentication and port'
+    'The REDIS_HOST, REDIS_PASSWORD, REDIS_DB and REDIS_PORT env variables must be set to the location of your redis server'
   );
   // $FlowFixMe
   process.exit(1);
