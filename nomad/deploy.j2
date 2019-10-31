@@ -7,20 +7,15 @@ job "outline/[[ deploy_env ]]" {
     policies = ["outline_[[ deploy_env ]]"]
   }
 
-  reschedule {
-   attempts       = 0
-   unlimited      = false
+  meta {
+    alert_slack_channel = "outline-alerts"
   }
 
   update {
     max_parallel     = 1
     min_healthy_time = "10s"
     healthy_deadline = "3m"
-    auto_revert      = false
-  }
-
-  meta {
-    alert_slack_channel = "outline-alerts"
+    auto_revert      = true
   }
 
   migrate {
@@ -34,13 +29,13 @@ job "outline/[[ deploy_env ]]" {
     count = 1
     restart {
       attempts = 0
-      interval = "1m"
+      interval = "30m"
       delay    = "15s"
       mode     = "fail"
     }
     task "node" {
       driver = "docker"
-      kill_timeout = "5m"
+      kill_timeout = "24h"
       config {
         image = "[[ "DOCKER_IMAGE" | env ]]"
         port_map {
@@ -68,8 +63,8 @@ job "outline/[[ deploy_env ]]" {
           name     = "alive"
           type     = "http"
           path     = "/_health"
-          interval = "10s"
-          timeout  = "10s"
+          interval = "30s"
+          timeout  = "10m"
         }
       }
       env {
