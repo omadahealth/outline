@@ -77,6 +77,7 @@ if (process.env.NODE_ENV === 'development') {
         trustProtoHeader: true,
       })
     );
+    app.use(logger());
   } else {
     console.warn('Enforced https was disabled with FORCE_HTTPS env variable');
   }
