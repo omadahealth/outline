@@ -4,9 +4,8 @@ FROM node:12-alpine
 # Need this for properly handling SIGINT: https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md#handling-kernel-signals
 # Cant do it with nomad yet: https://github.com/hashicorp/nomad/issues/2719
 ENV TINI_VERSION v0.18.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
-ENTRYPOINT ["/tini", "--"]
+RUN apk add --no-cache tini
+ENTRYPOINT ["/sbin/tini", "--"]
 
 ENV PATH /opt/outline/node_modules/.bin:/opt/node_modules/.bin:$PATH
 ENV NODE_PATH /opt/outline/node_modules:/opt/node_modules
