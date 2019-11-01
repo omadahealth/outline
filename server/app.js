@@ -102,6 +102,7 @@ if (process.env.NODE_ENV === 'development') {
       if (error.code === 'EPIPE' || error.code === 'ECONNRESET') {
         console.warn('Connection error', { error });
       } else {
+        console.log(error);
         bugsnag.koaHandler(error, ctx);
       }
     });
