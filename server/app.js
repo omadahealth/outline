@@ -109,7 +109,17 @@ if (process.env.SENTRY_DSN) {
       });
       Sentry.captureException(error);
     });
-  });
+
+    app.on('error', (error, ctx) => {
+      // we don't need to report every time a request stops to the bug tracker
+      if (error.code === 'EPIPE' || error.code === 'ECONNRESET') {
+        console.warn('Connection error', { error });
+      } else {
+        console.log(error);
+        bugsnag.koaHandler(error, ctx);
+      }
+    });
+  }
 }
 
 app.use(mount('/auth', auth));
