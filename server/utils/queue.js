@@ -12,7 +12,13 @@ export function createQueue(name: string) {
         case 'subscriber':
           return subscriber;
         default:
-          return new Redis(process.env.REDIS_URL);
+          return new Redis({
+            host: process.env.REDIS_HOST,
+            password: process.env.REDIS_PASSWORD,
+            port: process.env.REDIS_PORT,
+            db: process.env.REDIS_DB,
+            tls: { checkServerIdentity: () => undefined },
+          });
       }
     },
   });

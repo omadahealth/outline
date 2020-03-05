@@ -119,7 +119,7 @@ if (process.env.SENTRY_DSN) {
         bugsnag.koaHandler(error, ctx);
       }
     });
-  }
+  });
 }
 
 app.use(mount('/auth', auth));
