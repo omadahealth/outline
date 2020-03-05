@@ -3,23 +3,23 @@
 if [[ -z $1 ]]; then
     echo "Error: You must provide a deploy environment. (e.g. staging)"
     echo
-    echo "Usage: $0 {staging}"
+    echo "Usage: $0 {infra}"
     exit 1
 fi
 
 DEPLOY_ENV=$1
 
 case "$DEPLOY_ENV" in
-    "staging")
-        PROMETHEUS_ENV="staging"
-        GIT_TAG_PREFIX="staging"
+    "infra")
+        PROMETHEUS_ENV="infra"
+        GIT_TAG_PREFIX="infra"
     ;;
 esac
 
 set -ex
 
 ECR_REPO="661956145551.dkr.ecr.us-west-2.amazonaws.com/omada-registry/engineering/outline"
-IMAGE_NAME=$(./jenkins/image_name.sh staging)
+IMAGE_NAME=$(./jenkins/image_name.sh infra)
 export DOCKER_IMAGE="$ECR_REPO:$IMAGE_NAME"
 
 # See if image already exists in ECR (dont error out when this fails)
