@@ -6,15 +6,7 @@ import { archiveCollections } from './utils/zip';
 import { createQueue } from './utils/queue';
 
 const log = debug('logistics');
-const logisticsQueue = new Queue('logistics', {
-  redis: {
-    host: process.env.REDIS_HOST,
-    password: process.env.REDIS_PASSWORD,
-    port: process.env.REDIS_PORT,
-    db: process.env.REDIS_DB,
-    tls: { checkServerIdentity: () => undefined },
-  },
-});
+const logisticsQueue = createQueue('logistics');
 
 const queueOptions = {
   attempts: 2,
