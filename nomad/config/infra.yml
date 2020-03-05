@@ -1,0 +1,6 @@
+memory: 2000
+vault_cluster: infra
+data_center: vpc-10-110
+region_env: production
+deploy_env: infra
+service_name: outline
