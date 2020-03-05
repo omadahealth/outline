@@ -182,15 +182,7 @@ export class Mailer {
 const mailer = new Mailer();
 export default mailer;
 
-export const mailerQueue = new Queue('email', {
-  redis: {
-    host: process.env.REDIS_HOST,
-    password: process.env.REDIS_PASSWORD,
-    port: process.env.REDIS_PORT,
-    db: process.env.REDIS_DB,
-    tls: { checkServerIdentity: () => undefined },
-  },
-});
+export const mailerQueue = createQueue('email');
 
 mailerQueue.process(async (job: EmailJob) => {
   // $FlowIssue flow doesn't like dynamic values
